@@ -15,6 +15,35 @@ def save_contribution(contribution):
         f.seek(0)
         json.dump(data, f)
 
+# Add custom CSS for Bootstrap-like styling
+st.markdown("""
+    <style>
+        .main {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        h1, h2, h3 {
+            color: #343a40;
+        }
+        .btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .sidebar .sidebar-content {
+            background-color: #343a40;
+            color: white;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
 # Sidebar for navigation
 st.sidebar.title("Navigation")
 menu = st.sidebar.radio("Select a page:", ["Home", "About Us", "Contact Us"])
