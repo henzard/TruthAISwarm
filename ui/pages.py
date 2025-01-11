@@ -125,7 +125,7 @@ class Pages:
         self.components.show_user_header()
         st.title("🌐 TruthAISwarm Enterprise")
         
-        # Hero section with main image
+        # Hero section with main image and AI assistants
         col1, col2 = st.columns([2, 1])
         with col1:
             st.markdown("""
@@ -139,6 +139,42 @@ class Pages:
                 caption="Enterprise AI Verification",
                 use_container_width=True
             )
+        
+        # AI Assistant Team Section
+        st.subheader("🤖 Meet Your AI Verification Team")
+        col1, col2, col3, col4 = st.columns(4)
+        
+        with col1:
+            st.image(
+                "images/DALL·E 2025-01-11 11.12.44 - An anime-style character with an intelligent and tech-savvy appearance. The character is a young adult with sharp, expressive eyes, wearing futuristic.webp",
+                caption="AIDA - Data Analysis Expert",
+                use_container_width=True
+            )
+            st.markdown("**Specializes in:** Data Pattern Analysis")
+        
+        with col2:
+            st.image(
+                "images/DALL·E 2025-01-11 11.13.20 - An anime-style female character with an intelligent and tech-savvy appearance. She has expressive, sharp eyes and wears stylish, futuristic glasses wi.webp",
+                caption="MIKA - Source Verification Lead",
+                use_container_width=True
+            )
+            st.markdown("**Specializes in:** Source Credibility")
+        
+        with col3:
+            st.image(
+                "images\DALL·E 2025-01-11 11.13.47 - An anime-style depiction of a Black female character with an intelligent and tech-savvy vibe. She has expressive, sharp eyes and wears futuristic glas.webp",
+                caption="ZARA - Real-time Analysis Expert",
+                use_container_width=True
+            )
+            st.markdown("**Specializes in:** Trend Analysis")
+        
+        with col4:
+            st.image(
+                "images/DALL·E 2025-01-11 11.14.32 - An anime-style depiction of a Black male character with an intelligent and tech-savvy appearance. He has sharp, focused eyes and wears futuristic glas.webp",
+                caption="KAI - Security & Verification",
+                use_container_width=True
+            )
+            st.markdown("**Specializes in:** Bias Detection")
         
         # Features Section
         st.header("💫 Enterprise Solutions")
@@ -256,8 +292,35 @@ class Pages:
                 st.warning("Please enter a statement to verify.")
                 return
                 
-            with st.spinner("Analyzing statement and gathering sources..."):
+            with st.spinner("Your AI team is analyzing the statement..."):
                 result = self.llm_service.verify_fact(text_to_verify)
+                
+                # Show AI Team at work
+                cols = st.columns(4)
+                with cols[0]:
+                    st.image(
+                        "images/DALL·E 2025-01-11 11.12.44 - An anime-style character with an intelligent and tech-savvy appearance. The character is a young adult with sharp, expressive eyes, wearing futuristic.webp",
+                        caption="Analyzing Patterns",
+                        use_container_width=True
+                    )
+                with cols[1]:
+                    st.image(
+                        "images/DALL·E 2025-01-11 11.13.20 - An anime-style female character with an intelligent and tech-savvy appearance. She has expressive, sharp eyes and wears stylish, futuristic glasses wi.webp",
+                        caption="Verifying Sources",
+                        use_container_width=True
+                    )
+                with cols[2]:
+                    st.image(
+                        "images/DALL·E 2025-01-11 11.13.54 - An anime-style depiction of a Black female character with an intelligent and tech-savvy vibe. She has expressive, sharp eyes and wears futuristic glas.webp",
+                        caption="Real-time Analysis",
+                        use_container_width=True
+                    )
+                with cols[3]:
+                    st.image(
+                        "images/DALL·E 2025-01-11 11.14.32 - An anime-style depiction of a Black male character with an intelligent and tech-savvy appearance. He has sharp, focused eyes and wears futuristic glas.webp",
+                        caption="Bias Check",
+                        use_container_width=True
+                    )
                 
                 # Display results in an organized way
                 col1, col2 = st.columns([2, 1])
