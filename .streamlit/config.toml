@@ -1,0 +1,10 @@
+[theme]
+# Light mode settings
+base="light"
+primaryColor="#007bff"
+secondaryBackgroundColor="#f8f9fa"
+textColor="#343a40"
+
+# Enable the built-in dark mode toggle
+[browser]
+gatherUsageStats = false 

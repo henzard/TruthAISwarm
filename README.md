@@ -1,35 +1,64 @@
 # TruthAISwarm
 
-## Overview
-TruthAISwarm is a decentralized AI-powered system designed to combat misinformation and ensure transparency in the digital age. It allows users to explore verified knowledge through dynamic truth bubbles and contribute to the verification of information.
+A decentralized AI-powered system designed to combat misinformation and ensure transparency.
 
 ## Features
-- **Truth Bubbles**: Visual representations of verified knowledge.
-- **Contribute Section**: Users can submit facts and insights.
-- **Live Feed**: Real-time updates on verified posts.
-- **User Profile**: Track contributions and rewards.
-- **TruthAI Assistant**: Chat with an AI ambassador for assistance.
 
-## Requirements
-To run this application, you need to install the following packages:
-
-- streamlit
-- pandas
-- plotly
+- User Authentication System
+- Contact Management
+- Admin Dashboard
+- Secure Password Handling
+- Database Integration
 
 ## Installation
-1. Clone the repository:
-   ```
-   git clone https://github.com/yourusername/TruthAISwarm.git
-   ```
-2. Navigate to the project directory:
-   ```
-   cd TruthAISwarm
-   ```
-3. Install the required packages:
-   ```
-   pip install -r requirements.txt
-   ```
 
-## Running the Application
-To run the application, use the following command: 
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/truthaiswarm.git
+cd truthaiswarm
+```
+
+2. Create a virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+3. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+4. Set up environment variables:
+```bash
+cp .env.example .env
+# Edit .env with your configuration
+```
+
+5. Run the application:
+```bash
+streamlit run main.py
+```
+
+## Security Features
+
+- Password hashing with bcrypt
+- Secure session management
+- Environment variable configuration
+- Database security measures
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Security
+
+If you discover any security-related issues, please email security@yourproject.com instead of using the issue tracker. 
