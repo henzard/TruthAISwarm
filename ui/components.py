@@ -18,9 +18,20 @@ class UIComponents:
                 }
 
                 .user-info {
-                    padding: 10px;
-                    border-radius: 5px;
+                    padding: 12px 15px;
+                    border-radius: 8px;
                     margin: 10px 0;
+                    background-color: #f8f9fa;
+                    border: 1px solid #e9ecef;
+                    color: #495057;
+                    font-size: 1rem;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                }
+
+                .user-info i {
+                    color: #007bff;
                 }
 
                 .form-container {
@@ -35,9 +46,10 @@ class UIComponents:
     @staticmethod
     def show_user_header():
         if st.session_state.user:
-            st.markdown("""
+            email = st.session_state.user.email
+            st.markdown(f"""
                 <div class="user-info">
-                    👤 Logged in as: {st.session_state.user.email}
+                    <i>👤</i> Logged in as: <strong>{email}</strong>
                 </div>
             """, unsafe_allow_html=True)
 

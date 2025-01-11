@@ -162,7 +162,7 @@ class Pages:
         
         with col3:
             st.image(
-                "images\DALL·E 2025-01-11 11.13.47 - An anime-style depiction of a Black female character with an intelligent and tech-savvy vibe. She has expressive, sharp eyes and wears futuristic glas.webp",
+                "images/DALL·E 2025-01-11 11.13.47 - An anime-style depiction of a Black female character with an intelligent and tech-savvy vibe. She has expressive, sharp eyes and wears futuristic glas.webp",
                 caption="ZARA - Real-time Analysis Expert",
                 use_container_width=True
             )
@@ -247,6 +247,12 @@ class Pages:
                 use_container_width=True
             )
         
+        # Demo Video Section
+        st.header("🎥 See TruthAISwarm in Action")
+        video_file = open('Demo.mp4', 'rb')
+        video_bytes = video_file.read()
+        st.video(video_bytes)
+        
         st.markdown("""
             ## Professional Team
             Our team consists of industry experts dedicated to maintaining the highest standards of 
@@ -311,7 +317,7 @@ class Pages:
                     )
                 with cols[2]:
                     st.image(
-                        "images/DALL·E 2025-01-11 11.13.54 - An anime-style depiction of a Black female character with an intelligent and tech-savvy vibe. She has expressive, sharp eyes and wears futuristic glas.webp",
+                        "images/DALL·E 2025-01-11 11.13.47 - An anime-style depiction of a Black female character with an intelligent and tech-savvy vibe. She has expressive, sharp eyes and wears futuristic glas.webp",
                         caption="Real-time Analysis",
                         use_container_width=True
                     )

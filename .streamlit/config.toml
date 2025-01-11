@@ -1,10 +1,13 @@
-[theme]
-# Light mode settings
-base="light"
-primaryColor="#007bff"
-secondaryBackgroundColor="#f8f9fa"
-textColor="#343a40"
+[server]
+enableXsrfProtection = false
+enableCORS = false
+enableWebsocketCompression = false
 
-# Enable the built-in dark mode toggle
 [browser]
-gatherUsageStats = false 
+gatherUsageStats = false
+
+[theme]
+base = "light"
+primaryColor = "#007bff"
+secondaryBackgroundColor = "#f8f9fa"
+textColor = "#343a40" 

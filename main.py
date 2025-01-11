@@ -27,9 +27,18 @@ def main():
 
     try:
         user_service = UserService(db)
+        
+        # Initialize cookie manager and check authentication
+        if not st.session_state.user:
+            # Get cookie manager instance (this will initialize it if needed)
+            cookie_manager = user_service.get_cookie_manager()
+            # Check for cookie authentication
+            user_service.check_cookie_auth()
+        
         contact_service = ContactService(db)
         analytics_service = AnalyticsService(db)
         export_service = ExportService()
+        
         pages = Pages(
             user_service, 
             contact_service, 
@@ -60,8 +69,7 @@ def main():
                     ["Home", "Fact Checker", "My Verifications", "About Us", "Contact Us"]
                 )
             if st.sidebar.button("Logout"):
-                st.session_state.user = None
-                st.session_state.authentication_status = None
+                user_service.logout()
                 st.rerun()
         else:
             menu = st.sidebar.radio(
