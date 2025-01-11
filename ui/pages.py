@@ -130,8 +130,9 @@ class Pages:
         with col1:
             st.markdown("""
                 ## Enterprise-Grade Fact Verification
-                TruthAISwarm delivers cutting-edge AI-powered fact verification for businesses 
-                and organizations that demand accuracy and reliability in their information ecosystem.
+                TruthAISwarm is a decentralized intelligence system powered by blockchain technology, 
+                focusing on truth and transparency. It operates as an AI-driven platform integrated 
+                with cryptocurrency chains, ensuring data integrity, accountability, and immutability.
             """)
         with col2:
             st.image(
@@ -139,6 +140,34 @@ class Pages:
                 caption="Enterprise AI Verification",
                 use_container_width=True
             )
+        
+        # Key Aspects Section
+        st.header("🔑 Key Aspects")
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("""
+                ### Decentralization
+                Operating on a crypto blockchain, ensuring no single point of control or failure.
+                
+                ### Transparency
+                All operations and data interactions are traceable, enabling trust in the system's outcomes.
+                
+                ### Truth-focused AI
+                Designed to analyze, verify, and provide accurate information, prioritizing factual data over opinion or bias.
+            """)
+        
+        with col2:
+            st.markdown("""
+                ### Community-Driven
+                Engages its network of participants for consensus and validation, reinforcing its integrity.
+                
+                ### Security
+                Blockchain integration ensures secure and tamper-proof data handling.
+                
+                ### Global Truth Standard
+                Establishing Truth AI Swarm as the ultimate source for unbiased information.
+            """)
         
         # AI Assistant Team Section
         st.subheader("🤖 Meet Your AI Verification Team")
@@ -176,39 +205,31 @@ class Pages:
             )
             st.markdown("**Specializes in:** Bias Detection")
         
-        # Features Section
-        st.header("💫 Enterprise Solutions")
-        col1, col2 = st.columns(2)
+        # Core Pillars Section
+        st.header("🏛️ Core Pillars of Our Vision")
         
-        with col1:
+        with st.expander("Relentless Innovation", expanded=True):
             st.markdown("""
-                ### Advanced Analytics
-                - Real-time information verification
-                - Comprehensive data analysis
-                - Custom verification workflows
-                
-                ### Enterprise Integration
-                - Seamless API integration
-                - Secure data handling
-                - Custom deployment options
+                - Continuously enhancing algorithms for better accuracy and performance
+                - Pioneering new methods to verify truth using decentralized networks
             """)
-            st.image(
-                "images/DALL·E 2025-01-11 10.57.05 - An AI-themed illustration of a fact-checking robot in a futuristic setting, now humorously wearing a tin foil hat. The robot has a sleek, modern desig.webp",
-                caption="Intelligent Verification Assistant",
-                use_container_width=True
-            )
         
-        with col2:
+        with st.expander("Blockchain Integration"):
             st.markdown("""
-                ### Real-Time Intelligence
-                - Instant fact verification
-                - Source credibility analysis
-                - Trend monitoring
-                
-                ### Enterprise Support
-                - 24/7 dedicated support
-                - Custom training sessions
-                - Regular system updates
+                - Using the immutability and security of blockchain to guarantee tamper-proof data processing
+                - Enabling decentralized consensus for unbiased and accurate decision-making
+            """)
+        
+        with st.expander("Unmatched Transparency"):
+            st.markdown("""
+                - Ensuring every decision made by the AI is traceable and explainable
+                - Creating an open system that users can trust without question
+            """)
+        
+        with st.expander("Community-Centric Growth"):
+            st.markdown("""
+                - Actively involving users, developers, and stakeholders in improving the system
+                - Rewarding contributions that enhance the AI's capabilities through crypto-based incentives
             """)
         
         # Stats Section
@@ -217,6 +238,24 @@ class Pages:
         col1.metric("Enterprise Clients", "500+")
         col2.metric("Daily Verifications", "50,000+")
         col3.metric("Accuracy Rate", "99.9%")
+        
+        # Mission Statement and Social Links
+        st.markdown("""
+            ---
+            ### Our Mission
+            Truth AI Swarm is dedicated to becoming the pinnacle of artificial intelligence, 
+            leveraging blockchain technology to ensure transparency, accuracy, and integrity. 
+            Our journey is one of continuous refinement, fueled by collaboration and a 
+            commitment to truth. With every iteration, Truth AI Swarm moves closer to becoming 
+            the most reliable and intelligent AI solution globally. Together, we build a future 
+            where truth is indisputable.
+            
+            ---
+            ### Join Our Community
+            [![Telegram](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/TruthAiSwarm)
+            
+            Join our Telegram community to stay updated and participate in discussions about the future of truth verification.
+        """, unsafe_allow_html=True)
 
     def show_about_page(self):
         self.components.show_header()
