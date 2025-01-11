@@ -3,6 +3,8 @@ import pandas as pd
 import plotly.express as px
 import json
 import os
+import sqlite3
+import hashlib
 
 # Function to save contributions to a file
 def save_contribution(contribution):
@@ -14,6 +16,73 @@ def save_contribution(contribution):
         data.append(contribution)
         f.seek(0)
         json.dump(data, f)
+
+# Function to save contact form data to SQLite
+def save_contact_form(name, email, message):
+    conn = sqlite3.connect('contact_form.db')
+    c = conn.cursor()
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS contacts (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            email TEXT NOT NULL,
+            message TEXT NOT NULL
+        )
+    ''')
+    c.execute('''
+        INSERT INTO contacts (name, email, message) VALUES (?, ?, ?)
+    ''', (name, email, message))
+    conn.commit()
+    conn.close()
+
+# Function to create user database and manage users
+def create_user_db():
+    conn = sqlite3.connect('user_db.db')
+    c = conn.cursor()
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            email TEXT NOT NULL UNIQUE,
+            password TEXT NOT NULL,
+            is_admin INTEGER NOT NULL
+        )
+    ''')
+    # Seed the database with an admin user if it doesn't exist
+    c.execute('SELECT * FROM users WHERE email = ?', ('henzardkruger@gmail.com',))
+    if not c.fetchone():
+        hashed_password = hash_password("Alicia07")
+        c.execute('INSERT INTO users (email, password, is_admin) VALUES (?, ?, ?)',
+                  ('henzardkruger@gmail.com', hashed_password, 1))
+    conn.commit()
+    conn.close()
+
+# Function to hash passwords
+def hash_password(password):
+    return hashlib.sha256(password.encode()).hexdigest()
+
+# Function to register a new user
+def register_user(email, password):
+    conn = sqlite3.connect('user_db.db')
+    c = conn.cursor()
+    hashed_password = hash_password(password)
+    try:
+        c.execute('INSERT INTO users (email, password, is_admin) VALUES (?, ?, ?)', (email, hashed_password, 0))
+        conn.commit()
+        return True
+    except sqlite3.IntegrityError:
+        return False
+    finally:
+        conn.close()
+
+# Function to authenticate user
+def authenticate_user(email, password):
+    conn = sqlite3.connect('user_db.db')
+    c = conn.cursor()
+    hashed_password = hash_password(password)
+    c.execute('SELECT * FROM users WHERE email = ? AND password = ?', (email, hashed_password))
+    user = c.fetchone()
+    conn.close()
+    return user
 
 # Add custom CSS for Bootstrap-like styling
 st.markdown("""
@@ -44,9 +113,16 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# Initialize user database
+create_user_db()
+
 # Sidebar for navigation
 st.sidebar.title("Navigation")
-menu = st.sidebar.radio("Select a page:", ["Home", "About Us", "Contact Us"])
+menu = st.sidebar.radio("Select a page:", ["Home", "About Us", "Login", "Register"])
+
+# User session state
+if 'user' not in st.session_state:
+    st.session_state.user = None
 
 # Title and Introduction
 if menu == "Home":
@@ -138,8 +214,33 @@ elif menu == "About Us":
     TruthAISwarm is a project dedicated to restoring trust in information. Our mission is to combat misinformation through a decentralized AI system that verifies facts and promotes transparency. We believe in the power of collective intelligence and the importance of truth in the digital age.
     """)
 
+# Login Section
+elif menu == "Login":
+    st.title("🔑 Login")
+    email = st.text_input("Email")
+    password = st.text_input("Password", type="password")
+    if st.button("Login"):
+        user = authenticate_user(email, password)
+        if user:
+            st.session_state.user = user
+            st.success("Login successful!")
+            st.experimental_rerun()  # Refresh the app to show the logged-in state
+        else:
+            st.error("Invalid email or password.")
+
+# Register Section
+elif menu == "Register":
+    st.title("📝 Register")
+    email = st.text_input("Email")
+    password = st.text_input("Password", type="password")
+    if st.button("Register"):
+        if register_user(email, password):
+            st.success("Registration successful! You can now log in.")
+        else:
+            st.error("Email already exists. Please use a different email.")
+
 # Contact Us Section
-elif menu == "Contact Us":
+if st.session_state.user:
     st.title("✉️ Contact Us")
     st.markdown("We would love to hear from you! Please fill out the form below to get in touch.")
     
@@ -149,4 +250,7 @@ elif menu == "Contact Us":
         message = st.text_area("Your Message")
         submitted = st.form_submit_button("Send")
         if submitted:
+            save_contact_form(name, email, message)
             st.success("Thank you for your message! We will get back to you soon.")
+else:
+    st.warning("You need to be logged in to access the Contact Us form.")
