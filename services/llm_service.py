@@ -1,4 +1,5 @@
 from openai import OpenAI
+import google.generativeai as genai
 from config import Config
 from googlesearch import search
 from gnews import GNews
@@ -8,7 +9,13 @@ import json
 
 class LLMService:
     def __init__(self):
-        self.client = OpenAI(api_key=Config.OPENAI_API_KEY)
+        self.ai_provider = Config.AI_PROVIDER
+        if self.ai_provider == 'openai':
+            self.client = OpenAI(api_key=Config.OPENAI_API_KEY)
+        else:  # gemini
+            genai.configure(api_key=Config.GEMINI_API_KEY)
+            self.model = genai.GenerativeModel('gemini-pro')
+        
         self.google_news = GNews(language='en', country='US', period='7d', max_results=5)
 
     def get_google_search_results(self, query: str, num_results: int = 5) -> list:
@@ -48,61 +55,83 @@ class LLMService:
 
     def verify_fact(self, text: str) -> dict:
         """
-        Verify if a given text is likely true or false using GPT-3.5 and web sources.
-        Returns a dictionary with the verdict and explanation.
+        Verify if a given text is likely true or false using the configured AI provider.
         """
         try:
             # Get search results and news articles
             search_results = self.get_google_search_results(text)
             news_results = self.get_news_articles(text)
 
-            # Create a comprehensive prompt with the search results
-            prompt = f"""
-            Please analyze the following statement and determine if it's likely true or false.
-            Use the provided search results and news articles for verification.
-            
+            # Create a comprehensive prompt
+            prompt = """
+            Analyze this statement and determine if it's true or false.
             Statement: "{text}"
             
-            Recent Google Search Results:
-            {json.dumps(search_results, indent=2)}
+            Search Results: {search_results}
+            News Articles: {news_results}
             
-            Recent News Articles:
-            {json.dumps(news_results, indent=2)}
-            
-            Based on the above sources and your knowledge, provide a comprehensive fact-check.
-            
-            Respond in the following JSON format:
+            Provide a fact-check response in valid JSON format with these exact fields:
             {{
                 "verdict": "TRUE/FALSE/UNCERTAIN",
-                "confidence": "percentage (0-100)",
-                "explanation": "detailed explanation",
+                "confidence": 85,
+                "explanation": "Your detailed explanation here",
                 "sources": [
                     {{
                         "url": "source URL",
-                        "relevance": "how this source supports the verdict"
+                        "relevance": "relevance explanation"
                     }}
                 ],
-                "recent_developments": "any recent news or updates related to this topic",
-                "potential_biases": ["any potential biases identified"],
-                "fact_check_date": "current date and time"
+                "recent_developments": "recent updates",
+                "potential_biases": ["bias 1", "bias 2"],
+                "fact_check_date": "current date"
             }}
-            """
-
-            response = self.client.chat.completions.create(
-                model="gpt-3.5-turbo",
-                messages=[
-                    {
-                        "role": "system", 
-                        "content": "You are a fact-checking AI assistant focused on accuracy and truth verification. Use provided sources to verify claims."
-                    },
-                    {"role": "user", "content": prompt}
-                ],
-                temperature=0.2
-            )
             
-            # Extract the content from the response
-            result = response.choices[0].message.content
-            verification_result = eval(result)
+            Important: Ensure the response is valid JSON and all strings are properly escaped.
+            """.format(
+                text=text,
+                search_results=json.dumps(search_results),
+                news_results=json.dumps(news_results)
+            )
+
+            if self.ai_provider == 'openai':
+                response = self.client.chat.completions.create(
+                    model="gpt-3.5-turbo",
+                    messages=[
+                        {
+                            "role": "system", 
+                            "content": "You are a fact-checking AI. Respond only with valid JSON."
+                        },
+                        {"role": "user", "content": prompt}
+                    ],
+                    temperature=0.2
+                )
+                result = response.choices[0].message.content
+            else:  # gemini
+                response = self.model.generate_content(
+                    prompt,
+                    generation_config=genai.types.GenerationConfig(
+                        temperature=0.2
+                    )
+                )
+                result = response.text
+
+            # Clean and parse the response
+            try:
+                # Remove any markdown formatting that might be present
+                result = result.replace("```json", "").replace("```", "").strip()
+                verification_result = json.loads(result)
+            except json.JSONDecodeError as e:
+                return {
+                    "verdict": "ERROR",
+                    "confidence": 0,
+                    "explanation": f"Failed to parse AI response: {str(e)}",
+                    "sources": [],
+                    "recent_developments": "Error in response format",
+                    "potential_biases": [],
+                    "fact_check_date": "",
+                    "search_results": search_results,
+                    "news_articles": news_results
+                }
             
             # Add source materials to the result
             verification_result["search_results"] = search_results

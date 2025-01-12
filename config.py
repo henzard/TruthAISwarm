@@ -18,3 +18,7 @@ class Config:
     
     # OpenAI
     OPENAI_API_KEY = st.secrets.get("openai", {}).get("OPENAI_API_KEY") or os.getenv('OPENAI_API_KEY') 
+    
+    # AI Configuration
+    AI_PROVIDER = st.secrets.get("ai", {}).get("AI_PROVIDER") or os.getenv('AI_PROVIDER', 'gemini')
+    GEMINI_API_KEY = st.secrets.get("gemini", {}).get("GEMINI_API_KEY") or os.getenv('GEMINI_API_KEY') 

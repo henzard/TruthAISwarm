@@ -15,4 +15,5 @@ reportlab>=4.0.8
 wordcloud>=1.9.2
 matplotlib>=3.8.2
 seaborn>=0.13.1
-extra-streamlit-components>=0.1.60 
+extra-streamlit-components>=0.1.60
+google-generativeai>=0.3.0 
